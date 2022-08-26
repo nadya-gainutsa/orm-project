@@ -16,19 +16,27 @@ public class Demo {
         SessionFactory factory = new SessionFactory(dataSource);
 
         Session session = factory.createSession();
-        Product product = session.find(Product.class, 5L);
+        Product product = session.find(Product.class, 1L);
 
         log.info("Product: {}", product);
 
-        Product theSameProduct = session.find(Product.class, 5L);
+        Product theSameProduct = session.find(Product.class, 1L);
         log.info("Product: {}", theSameProduct);
 
+        theSameProduct.setName("New laptop");
+
         session.close();
+
+        Session session1 = factory.createSession();
+        product = session.find(Product.class, 1L);
+        log.info("Product: {}", product);
+        session1.close();
+
     }
 
     public static DataSource initPG() {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setURL("jdbc:postgresql://localhost:5432/database_name");
+        dataSource.setURL("jdbc:postgresql://localhost:5432/test");
         dataSource.setUser("postgres");
         dataSource.setPassword("postgres");
 
